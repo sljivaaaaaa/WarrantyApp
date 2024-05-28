@@ -1,0 +1,31 @@
+<!-- warranty-list.component.html -->
+<div class="header">
+    <h1>Warranty App</h1>
+    <input type="text" [(ngModel)]="searchTerm" (input)="search()" placeholder="Search warranties...">
+
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Serial Number</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Purchase Date</th>
+        <th>Warranty in Years</th>
+        <th>Extra Care</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let warranty of filteredWarranties">
+        <td>{{ warranty.fullName }}</td>
+        <td>{{ warranty.serialNumber }}</td>
+        <td>{{ warranty.manufacturer }}</td>
+        <td>{{ warranty.model }}</td>
+        <td>{{ warranty.purchaseDate | date: 'dd.MM.yyyy' }}</td>
+        <td>{{ warranty.warrantyInYears }}</td>
+        <td>{{ warranty.extraCare ? 'Yes' : 'No' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
