@@ -1,10 +1,47 @@
-
 <div class="header">
   <h1>Warranty App</h1>
-  <input type="text" [(ngModel)]="searchTerm" (input)="search()" placeholder="Search warranties...">
+  <div class="search-bar">
+    <div class="search-button">
+      <button mat-button (click)="expandSearch = !expandSearch" class="full-width-button">
+       Advanced Search... <mat-icon>{{ expandSearch ? 'expand_less' : 'expand_more' }}</mat-icon>
+      </button>
+    </div>
+    <div class="search-fields" *ngIf="expandSearch">
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search by Name" [(ngModel)]="searchParams.fullName" (keyup)="performSearch()">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search by Serial Number" [(ngModel)]="searchParams.serialNumber" (keyup)="performSearch()">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search by Manufacturer" [(ngModel)]="searchParams.manufacturer" (keyup)="performSearch()">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search by Model" [(ngModel)]="searchParams.model" (keyup)="performSearch()">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput [matDatepicker]="picker" placeholder="Search by Purchase Date" [(ngModel)]="searchParams.purchaseDate" (dateChange)="performSearch()">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search by Warranty Years" [(ngModel)]="searchParams.warrantyInYears" (keyup)="performSearch()">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-select placeholder="Search by Extra Care" [(ngModel)]="searchParams.extraCare" (selectionChange)="performSearch()">
+          <mat-option value="true">Yes</mat-option>
+          <mat-option value="false">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="general-search">
+        <input matInput placeholder="General Search" [(ngModel)]="generalSearchTerm" (keyup)="performGeneralSearch()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
 </div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
+<table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="fullName">
     <th mat-header-cell *matHeaderCellDef>Full Name</th>
     <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
@@ -20,7 +57,6 @@
     <td mat-cell *matCellDef="let element">{{ element.manufacturer }}</td>
   </ng-container>
 
-
   <ng-container matColumnDef="model">
     <th mat-header-cell *matHeaderCellDef>Model</th>
     <td mat-cell *matCellDef="let element">{{ element.model }}</td>
@@ -28,14 +64,13 @@
 
   <ng-container matColumnDef="purchaseDate">
     <th mat-header-cell *matHeaderCellDef>Purchase Date</th>
-    <td mat-cell *matCellDef="let element">{{ element.purchaseDate | date: 'dd.MM.yyyy' }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.purchaseDate | date:'dd.MM.yyyy' }}</td>
   </ng-container>
 
   <ng-container matColumnDef="warrantyInYears">
     <th mat-header-cell *matHeaderCellDef>Warranty in Years</th>
     <td mat-cell *matCellDef="let element">{{ element.warrantyInYears }}</td>
   </ng-container>
-
 
   <ng-container matColumnDef="extraCare">
     <th mat-header-cell *matHeaderCellDef>Extra Care</th>
@@ -44,3 +79,4 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
